@@ -8,11 +8,11 @@ import org.springframework.data.mongodb.repository.Query;
 import com.condominio.jockey.beans.Usuario;
 
 public interface UsuarioRepository extends MongoRepository<Usuario, String> {
-	
-	Usuario findFirstByAliasAndClave(String alias, String clave);
-	
+
+	Usuario findFirstByAlias(String alias);
+
 	List<Usuario> findAll();
-	
+
 	@Query(collation = "{alias: '?0'}")
 	List<Usuario> findCustomByAlias(String alias);
 }
