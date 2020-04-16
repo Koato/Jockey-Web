@@ -26,11 +26,11 @@ public class EjecucionEscritorio implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		eliminarTodo();
 		agregarDocumentos();
-		listarTodoAdministrador();
 		listarTodo();
-		actualizarPrimero();
-		extraerPrimero();
-		eliminarSegundo();
+		listarTodoAdministrador();
+//		actualizarPrimero();
+//		extraerPrimero();
+//		eliminarSegundo();
 	}
 
 	public void eliminarTodo() {
@@ -61,9 +61,6 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		tesorero.setTiempoAcceso("15/04/2020");
 		tesorero.setEstado(false);
 
-//		usuarioRepository.save(administrador);
-//		usuarioRepository.save(presidente);
-//		usuarioRepository.save(tesorero);
 		usuarioRepository.insert(administrador);
 		usuarioRepository.insert(presidente);
 		usuarioRepository.insert(tesorero);
@@ -71,24 +68,24 @@ public class EjecucionEscritorio implements CommandLineRunner {
 
 	public void listarTodoAdministrador() {
 		System.err.println("Listando a todos los administradores...");
-		usuarioRepository.findCustomByAlias("Administrador").forEach(admin -> System.out.println(admin));
+		usuarioRepository.findByAlias("Administrador").forEach(admin -> System.err.println(admin));
 	}
 
 	public void listarTodo() {
 		System.err.println("Listando toda la data...");
-		usuarioRepository.findAll().forEach(usuario -> System.out.println(usuario));
+		usuarioRepository.findAll().forEach(usuario -> System.err.println(usuario));
 	}
 
 	public void actualizarPrimero() {
 		System.err.println("Actualizando al primer registro");
 		long modificados = customRepository.updateUsuario("Tesorero", "11/09/1998");
-		System.out.println("Documentos modificados: " + modificados);
+		System.err.println("Documentos modificados: " + modificados);
 	}
 
 	public void extraerPrimero() {
 		System.err.println("Extrayendo al primer registro...");
 		Usuario usuario = usuarioRepository.findFirstByAlias("Tesorero");
-		System.out.println(usuario);
+		System.err.println(usuario);
 	}
 
 	public void eliminarSegundo() {

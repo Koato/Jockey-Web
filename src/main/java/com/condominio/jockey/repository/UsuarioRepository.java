@@ -13,6 +13,7 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 
 	List<Usuario> findAll();
 
-	@Query("{alias: '?0'}")
-	List<Usuario> findCustomByAlias(String alias);
+//	indico que campos no quiero traer valor
+	@Query(value = "{ alias: ?0 }", fields = "{ tiempoAcceso: 0 }")
+	List<Usuario> findByAlias(String alias);
 }
