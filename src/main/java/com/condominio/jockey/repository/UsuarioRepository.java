@@ -13,6 +13,6 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 
 	List<Usuario> findAll();
 
-	@Query(collation = "{alias: '?0'}")
+	@Query("{alias: '?0'}")
 	List<Usuario> findCustomByAlias(String alias);
 }

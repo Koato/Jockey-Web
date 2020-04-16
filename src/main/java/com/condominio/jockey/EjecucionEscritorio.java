@@ -26,8 +26,11 @@ public class EjecucionEscritorio implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		eliminarTodo();
 		agregarDocumentos();
+		listarTodoAdministrador();
 		listarTodo();
+		actualizarPrimero();
 		extraerPrimero();
+		eliminarSegundo();
 	}
 
 	public void eliminarTodo() {
@@ -41,23 +44,34 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		administrador.setId("1");
 		administrador.setAlias("Administrador");
 		administrador.setClave("ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f");
-		administrador.setTiempoAcceso("15/04/2020");
+		administrador.setTiempoAcceso("13/04/2020");
 		administrador.setEstado(true);
+
 		Usuario presidente = new Usuario();
 		presidente.setId("2");
 		presidente.setAlias("Presidente");
 		presidente.setClave("0729563253bc11cb72714d61132adfe7ba2346b581b02546c9ac4a65fc0c02d8");
-		presidente.setTiempoAcceso("15/04/2020");
-		presidente.setEstado(true);
+		presidente.setTiempoAcceso("14/04/2020");
+//		presidente.setEstado(true);
+
 		Usuario tesorero = new Usuario();
 		tesorero.setId("3");
 		tesorero.setAlias("Tesorero");
 		tesorero.setClave("6b2a33f4d7ccddc176fdc65a2e6d9fdf39f161e5afeca296c50c3eea94d40924");
 		tesorero.setTiempoAcceso("15/04/2020");
-		tesorero.setEstado(true);
-		usuarioRepository.save(administrador);
-		usuarioRepository.save(presidente);
-		usuarioRepository.save(tesorero);
+		tesorero.setEstado(false);
+
+//		usuarioRepository.save(administrador);
+//		usuarioRepository.save(presidente);
+//		usuarioRepository.save(tesorero);
+		usuarioRepository.insert(administrador);
+		usuarioRepository.insert(presidente);
+		usuarioRepository.insert(tesorero);
+	}
+
+	public void listarTodoAdministrador() {
+		System.err.println("Listando a todos los administradores...");
+		usuarioRepository.findCustomByAlias("Administrador").forEach(admin -> System.out.println(admin));
 	}
 
 	public void listarTodo() {
@@ -65,9 +79,20 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		usuarioRepository.findAll().forEach(usuario -> System.out.println(usuario));
 	}
 
+	public void actualizarPrimero() {
+		System.err.println("Actualizando al primer registro");
+		long modificados = customRepository.updateUsuario("Tesorero", "11/09/1998");
+		System.out.println("Documentos modificados: " + modificados);
+	}
+
 	public void extraerPrimero() {
 		System.err.println("Extrayendo al primer registro...");
 		Usuario usuario = usuarioRepository.findFirstByAlias("Tesorero");
 		System.out.println(usuario);
+	}
+
+	public void eliminarSegundo() {
+		System.err.println("Elimando al segundo registro");
+		customRepository.eliminarUsuario("2");
 	}
 }
