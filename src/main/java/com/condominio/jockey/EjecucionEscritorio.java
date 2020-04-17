@@ -24,8 +24,8 @@ public class EjecucionEscritorio implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		eliminarTodo();
-		agregarDocumentos();
+//		eliminarTodo();
+//		agregarDocumentos();
 //		listarTodo();
 //		listarTodoAdministrador();
 //		actualizarPrimero();

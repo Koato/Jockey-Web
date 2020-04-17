@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +26,15 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioServices usuarioServices;
 
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	private Usuario usuario;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Usuario> usuarioById(@PathVariable String id) {
 		try {
 			usuario = usuarioServices.findById(id);
+			System.err.println(bCryptPasswordEncoder.encode(usuario.getAlias()));
 			return ResponseEntity.ok(usuario);
 		} catch (UserNotFoundException e) {
 			usuario = null;
@@ -56,6 +60,7 @@ public class UsuarioController {
 
 	@PutMapping
 	public ResponseEntity<Void> actualizarUsuario(@RequestBody @Valid Usuario usuario) {
+//		System.err.println("JWT: " + bCryptPasswordEncoder.encode(usuario.getClave()));
 		usuarioServices.actualizarUsuario(usuario);
 		return ResponseEntity.ok().build();
 	}
