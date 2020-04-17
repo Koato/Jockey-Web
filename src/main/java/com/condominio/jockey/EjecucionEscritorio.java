@@ -26,8 +26,8 @@ public class EjecucionEscritorio implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		eliminarTodo();
 		agregarDocumentos();
-		listarTodo();
-		listarTodoAdministrador();
+//		listarTodo();
+//		listarTodoAdministrador();
 //		actualizarPrimero();
 //		extraerPrimero();
 //		eliminarSegundo();
@@ -52,7 +52,7 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		presidente.setAlias("Presidente");
 		presidente.setClave("0729563253bc11cb72714d61132adfe7ba2346b581b02546c9ac4a65fc0c02d8");
 		presidente.setTiempoAcceso("14/04/2020");
-//		presidente.setEstado(true);
+		presidente.setEstado(true);
 
 		Usuario tesorero = new Usuario();
 		tesorero.setId("3");
@@ -78,7 +78,13 @@ public class EjecucionEscritorio implements CommandLineRunner {
 
 	public void actualizarPrimero() {
 		System.err.println("Actualizando al primer registro");
-		long modificados = customRepository.updateUsuario("Tesorero", "11/09/1998");
+		Usuario tesorero = new Usuario();
+		tesorero.setId("3");
+		tesorero.setAlias("Tesorero");
+		tesorero.setClave("6b2a33f4d7ccddc176fdc65a2e6d9fdf39f161e5afeca296c50c3eea94d40924");
+		tesorero.setTiempoAcceso("21/04/2020");
+		tesorero.setEstado(false);
+		long modificados = customRepository.updateUsuario(tesorero);
 		System.err.println("Documentos modificados: " + modificados);
 	}
 

@@ -19,10 +19,13 @@ public class CustomRespositoryImpl implements CustomRepository {
 	MongoTemplate mongoTemplate;
 
 	@Override
-	public long updateUsuario(String alias, String tiempoAcceso) {
-		Query query = new Query(Criteria.where("alias").is(alias));
+	public long updateUsuario(Usuario usuario) {
+		Query query = new Query(Criteria.where("_id").is(usuario.getId()));
 		Update update = new Update();
-		update.set("tiempoAcceso", tiempoAcceso);
+		update.set("alias", usuario.getAlias());
+		update.set("clave", usuario.getClave());
+		update.set("tiempoAcceso", usuario.getTiempoAcceso());
+		update.set("estado", usuario.isEstado());
 //		UpdateResult result = mongoTemplate.updateFirst(query, update, Usuario.class);
 		UpdateResult result = mongoTemplate.upsert(query, update, Usuario.class);
 		if (result != null) {
