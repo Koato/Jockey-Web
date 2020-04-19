@@ -1,5 +1,7 @@
 package com.condominio.jockey.beans;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,4 +16,5 @@ public class Usuario {
 	private String clave;
 	private String tiempoAcceso;
 	private boolean estado;
+	private List<String> roles;
 }

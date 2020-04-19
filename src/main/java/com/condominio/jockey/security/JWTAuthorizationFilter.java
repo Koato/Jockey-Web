@@ -1,11 +1,7 @@
 package com.condominio.jockey.security;
 
-import static com.condominio.jockey.security.Constants.HEADER_AUTHORIZACION_KEY;
-import static com.condominio.jockey.security.Constants.SUPER_SECRET_KEY;
-import static com.condominio.jockey.security.Constants.TOKEN_BEARER_PREFIX;
-
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,40 +13,42 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-	public JWTAuthorizationFilter(AuthenticationManager authManager) {
-		super(authManager);
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+		super(authenticationManager);
 	}
 
-//	haciendo filtro interno
 	@Override
-	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
-			throws IOException, ServletException {
-		String header = req.getHeader(HEADER_AUTHORIZACION_KEY);
-		if (header == null || !header.startsWith(TOKEN_BEARER_PREFIX)) {
-			chain.doFilter(req, res);
-			return;
-		}
-		UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		chain.doFilter(req, res);
-	}
-
-//	obtener autenticacion
-	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-		String token = request.getHeader(HEADER_AUTHORIZACION_KEY);
-		if (token != null) {
-			// Se procesa el token y se recupera el usuario.
-			String user = Jwts.parser().setSigningKey(SUPER_SECRET_KEY)
-					.parseClaimsJws(token.replace(TOKEN_BEARER_PREFIX, "")).getBody().getSubject();
-			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		try {
+			String header = request.getHeader(Constantes.HEADER);
+			if (header == null || !header.startsWith(Constantes.PREFIX)) {
+				String token = request.getHeader(Constantes.HEADER).replace(Constantes.PREFIX, "");
+				// Se procesa el token y se recupera el usuario.
+				String claims = Jwts.parser().setSigningKey(Constantes.SECRET_KEY.getBytes()).parseClaimsJws(token)
+						.getBody().getSubject();
+				if (claims != null) {
+					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims, null,
+							Collections.emptyList());
+					SecurityContextHolder.getContext().setAuthentication(auth);
+				} else {
+					SecurityContextHolder.clearContext();
+				}
 			}
-			return null;
+			filterChain.doFilter(request, response);
+		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+		} catch (NullPointerException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 		}
-		return null;
 	}
 }

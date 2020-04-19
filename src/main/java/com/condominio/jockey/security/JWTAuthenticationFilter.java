@@ -1,7 +1,7 @@
 package com.condominio.jockey.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.condominio.jockey.beans.Usuario;
+import com.condominio.jockey.security.services.PersonalizacionUsuarioDetalle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
@@ -29,26 +29,29 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		this.authenticationManager = authenticationManager;
 	}
 
-//	intento autenticacion
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Usuario usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
-			return authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(usuario.getAlias(), usuario.getClave(), new ArrayList<>()));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			Usuario credenciales = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					credenciales.getAlias(), credenciales.getClave(), Collections.emptyList());
+			return authenticationManager.authenticate(authenticationToken);
+		} catch (IOException | RuntimeException e) {
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-//	autenticacion exitosa
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
-		String token = Jwts.builder().setIssuedAt(new Date()).setIssuer(Constants.ISSUER_INFO)
-				.setSubject(((User) auth.getPrincipal()).getUsername())
-				.setExpiration(new Date(System.currentTimeMillis() + Constants.TOKEN_EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, Constants.SUPER_SECRET_KEY).compact();
-		response.addHeader(Constants.HEADER_AUTHORIZACION_KEY, Constants.TOKEN_BEARER_PREFIX + " " + token);
+//		obtengo la clase del logueo exitoso
+		PersonalizacionUsuarioDetalle usuarioDetalle = (PersonalizacionUsuarioDetalle) auth.getPrincipal();
+//		traslado la informacion al usuario
+		Usuario usuario = usuarioDetalle.getUsuario();
+		String token = Jwts.builder().setId("softtekJWT").setSubject(usuario.getAlias())
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + Constantes.TOKEN_EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, Constantes.SECRET_KEY.getBytes()).compact();
+		response.addHeader(Constantes.HEADER, Constantes.PREFIX + " " + token);
 	}
 }

@@ -24,6 +24,17 @@ public class EjecucionEscritorio implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+//		String password1 = "12345678";
+//		String password2 = "147852";
+//		String password3 = "963258";
+//
+//		String bcryptPassword1 = new BCryptPasswordEncoder().encode(password1);
+//		String bcryptPassword2 = new BCryptPasswordEncoder().encode(password2);
+//		String bcryptPassword3 = new BCryptPasswordEncoder().encode(password3);
+//		System.err.println("Administrador: "+bcryptPassword1);
+//		System.err.println("Presidente: "+bcryptPassword2);
+//		System.err.println("Tesorero: "+bcryptPassword3);
+
 //		eliminarTodo();
 //		agregarDocumentos();
 //		listarTodo();

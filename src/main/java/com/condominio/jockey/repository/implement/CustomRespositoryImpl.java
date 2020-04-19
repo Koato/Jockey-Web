@@ -26,7 +26,6 @@ public class CustomRespositoryImpl implements CustomRepository {
 		update.set("clave", usuario.getClave());
 		update.set("tiempoAcceso", usuario.getTiempoAcceso());
 		update.set("estado", usuario.isEstado());
-//		UpdateResult result = mongoTemplate.updateFirst(query, update, Usuario.class);
 		UpdateResult result = mongoTemplate.upsert(query, update, Usuario.class);
 		if (result != null) {
 			return result.getModifiedCount();
