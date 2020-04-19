@@ -1,5 +1,7 @@
 package com.condominio.jockey;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,17 +26,6 @@ public class EjecucionEscritorio implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		String password1 = "12345678";
-//		String password2 = "147852";
-//		String password3 = "963258";
-//
-//		String bcryptPassword1 = new BCryptPasswordEncoder().encode(password1);
-//		String bcryptPassword2 = new BCryptPasswordEncoder().encode(password2);
-//		String bcryptPassword3 = new BCryptPasswordEncoder().encode(password3);
-//		System.err.println("Administrador: "+bcryptPassword1);
-//		System.err.println("Presidente: "+bcryptPassword2);
-//		System.err.println("Tesorero: "+bcryptPassword3);
-
 //		eliminarTodo();
 //		agregarDocumentos();
 //		listarTodo();
@@ -54,23 +45,26 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		Usuario administrador = new Usuario();
 		administrador.setId("1");
 		administrador.setAlias("Administrador");
-		administrador.setClave("ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f");
+		administrador.setClave("$2a$10$PVm.mQWtWOBJ44rCFff4N.8RofPKrTQuhEiNPn6IXrRE7NLdk6ojW");
 		administrador.setTiempoAcceso("13/04/2020");
 		administrador.setEstado(true);
+		administrador.setRoles(Arrays.asList("Administrador", "Usuario"));
 
 		Usuario presidente = new Usuario();
 		presidente.setId("2");
 		presidente.setAlias("Presidente");
-		presidente.setClave("0729563253bc11cb72714d61132adfe7ba2346b581b02546c9ac4a65fc0c02d8");
+		presidente.setClave("$2a$10$OFEejm.Rkd2RtbU3n9pHzeu6dXfb029Whs7BX88u/1DuEcbCbC1q.");
 		presidente.setTiempoAcceso("14/04/2020");
 		presidente.setEstado(true);
+		presidente.setRoles(Arrays.asList("Usuario"));
 
 		Usuario tesorero = new Usuario();
 		tesorero.setId("3");
 		tesorero.setAlias("Tesorero");
-		tesorero.setClave("6b2a33f4d7ccddc176fdc65a2e6d9fdf39f161e5afeca296c50c3eea94d40924");
+		tesorero.setClave("$2a$10$pzI9vtVI6vos8brPgZh5iOBJSokz4vPJ5yqbT0Djkv8OVPj/dwORm");
 		tesorero.setTiempoAcceso("15/04/2020");
 		tesorero.setEstado(false);
+		tesorero.setRoles(Arrays.asList("Usuario"));
 
 		usuarioRepository.insert(administrador);
 		usuarioRepository.insert(presidente);

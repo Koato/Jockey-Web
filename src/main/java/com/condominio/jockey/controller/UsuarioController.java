@@ -38,11 +38,8 @@ public class UsuarioController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping(value = "/login")
-	public ResponseEntity<String> login(@PathVariable String alias) {
-		return ResponseEntity.ok(alias);
-	}
-
+//	asignar que roles pueden acceder 
+//	@Secured("Administrador")
 	@GetMapping
 	public ResponseEntity<List<Usuario>> usuarioById() {
 		return ResponseEntity.ok(usuarioServices.findAll());
