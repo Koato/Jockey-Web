@@ -14,13 +14,13 @@ import lombok.Data;
 public class Usuario {
 	@Indexed
 	private String id;
-	@NotEmpty
+	@NotEmpty(message = "No puede estar vacio")
 	private String alias;
-	@NotEmpty
+	@NotEmpty(message = "No puede estar vacio")
 	private String clave;
-	@NotEmpty
+	@NotEmpty(message = "No puede estar vacio")
 	private String tiempoAcceso;
 	private boolean estado;
-	@NotEmpty
+	@NotEmpty(message = "No puede estar vacio")
 	private List<String> roles;
 }
