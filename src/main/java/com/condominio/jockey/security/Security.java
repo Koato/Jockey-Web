@@ -24,6 +24,7 @@ class Security extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -37,8 +38,11 @@ class Security extends WebSecurityConfigurerAdapter {
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				// Se indica que el login no requiere autenticación
-				.authorizeRequests().antMatchers(HttpMethod.POST, Constantes.LOGIN_URL).permitAll().anyRequest()
-				.authenticated();
+				.authorizeRequests().antMatchers(HttpMethod.POST, Constantes.LOGIN_URL).permitAll()
+				// Permisos para acceder al swagger
+				.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll().antMatchers(HttpMethod.GET, "/v2/api-docs")
+				.permitAll().antMatchers(HttpMethod.GET, "/swagger-resources/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/webjars/**").permitAll().anyRequest().authenticated();
 	}
 
 	@Override

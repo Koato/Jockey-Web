@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,10 +27,17 @@ import com.condominio.jockey.beans.Usuario;
 import com.condominio.jockey.exception.UserNotFoundException;
 import com.condominio.jockey.services.UsuarioServices;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 //indico quienes pueden consumir el servicio
 @CrossOrigin(origins = { "http://localhost:3131" })
 @RestController
 @RequestMapping(value = "/usuarios")
+//documentacion del servicios
+@Api(tags = { "Controlador de usuarios" }, description = "Esta API tiene el CRUD de usuarios")
 public class UsuarioController {
 	@Autowired
 	private UsuarioServices usuarioServices;
@@ -38,6 +45,10 @@ public class UsuarioController {
 	private static final String RESPONSE_ERROR = "error";
 	private static final String RESPONSE_MENSAJE = "mensaje";
 
+//	documentacion del metodo
+	@ApiOperation(value = "Encuentra un usuario", notes = "Returna a un usuario por id", response = ResponseEntity.class)
+	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
+			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> usuario(@PathVariable String id) {
 		Map<String, Object> response = new HashMap<>();
@@ -55,8 +66,9 @@ public class UsuarioController {
 		}
 	}
 
-//	asignar que roles pueden acceder 
-	@Secured("Administrador")
+	@ApiOperation(value = "Encontrar todos los usuario", notes = "Returna todos los usuarios", response = List.class)
+	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
+			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@GetMapping
 	public ResponseEntity<?> usuarios() {
 		Map<String, Object> response = new HashMap<>();
@@ -65,6 +77,10 @@ public class UsuarioController {
 		return ResponseEntity.ok(response);
 	}
 
+	@ApiOperation(value = "Creacion de usuario", notes = "Creacion de un nuevo usuario", response = ResponseEntity.class)
+	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_CREATED, message = "ELEMENTO CREADO"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "CAMPOS FALTANTES"),
+			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@PostMapping
 	public ResponseEntity<?> insertarUsuario(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		Map<String, Object> response = new HashMap<>();
@@ -89,6 +105,10 @@ public class UsuarioController {
 		}
 	}
 
+	@ApiOperation(value = "Actualizacion de usuario", notes = "Actualizacion de usuario por id", response = ResponseEntity.class)
+	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "CAMPOS FALTANTES"),
+			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@PutMapping(value = "/{id}/editar")
 	public ResponseEntity<?> actualizarUsuario(@PathVariable String id, @Valid @RequestBody Usuario usuario,
 			BindingResult result) {
@@ -117,6 +137,9 @@ public class UsuarioController {
 		}
 	}
 
+	@ApiOperation(value = "Eliminacion de usuario", notes = "Eliminacion de usuario por id", response = ResponseEntity.class)
+	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
+			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> eliminarUsuario(@PathVariable String id) {
 		Map<String, Object> response = new HashMap<>();
