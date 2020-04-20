@@ -63,8 +63,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		Usuario usuario = usuarioDetalle.getUsuario();
 //		asignacion de roles obtenidos
 		List<GrantedAuthority> userAuthorities = new ArrayList<>();
-		for (String rol : usuario.getRoles()) {
-			userAuthorities.add(new SimpleGrantedAuthority(rol));
+		if (usuario.getRoles() != null) {
+			for (String rol : usuario.getRoles()) {
+				userAuthorities.add(new SimpleGrantedAuthority(rol));
+			}
 		}
 		Map<String, Object> body = new HashMap<>();
 		User user = new User(usuario.getAlias(), usuario.getClave(), usuario.isEstado(), true, true, true,
@@ -73,9 +75,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		Collection<? extends GrantedAuthority> roles = user.getAuthorities();
 		Claims claims = Jwts.claims();
 		claims.put(Constantes.AUTHORITIES, new ObjectMapper().writeValueAsString(roles));
-		String token = Jwts.builder().setSubject(usuario.getAlias())
+		String token = Jwts.builder()
 //				indico los roles que tiene
 				.setClaims(claims)
+//				identificador del token
+				.setId(Constantes.ID)
+//				informacion al token
+				.setIssuer(Constantes.ISSUER_INFO)
+//				agrego informacion del usuario
+				.setSubject(usuario.getAlias())
 //				fecha de creacion
 				.setIssuedAt(new Date())
 //				fecha de expiracion

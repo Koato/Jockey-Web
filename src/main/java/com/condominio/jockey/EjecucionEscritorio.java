@@ -8,8 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.condominio.jockey.beans.Usuario;
-import com.condominio.jockey.repository.CustomRepository;
 import com.condominio.jockey.repository.UsuarioRepository;
+import com.condominio.jockey.services.UsuarioServices;
 
 @SpringBootApplication
 public class EjecucionEscritorio implements CommandLineRunner {
@@ -18,7 +18,7 @@ public class EjecucionEscritorio implements CommandLineRunner {
 	UsuarioRepository usuarioRepository;
 
 	@Autowired
-	CustomRepository customRepository;
+	UsuarioServices usuarioServices;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EjecucionEscritorio.class, args);
@@ -89,8 +89,8 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		tesorero.setClave("6b2a33f4d7ccddc176fdc65a2e6d9fdf39f161e5afeca296c50c3eea94d40924");
 		tesorero.setTiempoAcceso("21/04/2020");
 		tesorero.setEstado(false);
-		long modificados = customRepository.updateUsuario(tesorero);
-		System.err.println("Documentos modificados: " + modificados);
+		usuarioServices.actualizarUsuario(tesorero);
+		System.err.println("Documento modificado");
 	}
 
 	public void extraerPrimero() {
@@ -101,6 +101,6 @@ public class EjecucionEscritorio implements CommandLineRunner {
 
 	public void eliminarSegundo() {
 		System.err.println("Elimando al segundo registro");
-		customRepository.eliminarUsuario("2");
+		usuarioServices.eliminarUsuario("2");
 	}
 }

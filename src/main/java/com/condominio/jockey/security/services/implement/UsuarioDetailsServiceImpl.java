@@ -32,8 +32,10 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
 		}
 //		Asignacion de roles
 		List<GrantedAuthority> userAuthorities = new ArrayList<>();
-		for (String rol : usuario.getRoles()) {
-			userAuthorities.add(new SimpleGrantedAuthority(rol));
+		if (usuario.getRoles() != null) {
+			for (String rol : usuario.getRoles()) {
+				userAuthorities.add(new SimpleGrantedAuthority(rol));
+			}
 		}
 		PersonalizacionUsuarioDetalle customUserDetail = new PersonalizacionUsuarioDetalle();
 		customUserDetail.setUsuario(usuario);
