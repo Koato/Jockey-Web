@@ -31,7 +31,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String header = request.getHeader(Constantes.HEADER);
+		String header = request.getHeader(ConstantesSeguridad.HEADER);
 		if (!requiresAuthentication(header)) {
 			filterChain.doFilter(request, response);
 			return;
@@ -40,8 +40,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		boolean validToken = false;
 		Claims claims = null;
 		try {
-			String token = request.getHeader(Constantes.HEADER).replace(Constantes.PREFIX, "");
-			claims = Jwts.parser().setSigningKey(Constantes.SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
+			String token = request.getHeader(ConstantesSeguridad.HEADER).replace(ConstantesSeguridad.PREFIX, "");
+			claims = Jwts.parser().setSigningKey(ConstantesSeguridad.SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
 			validToken = true;
 		} catch (JwtException | IllegalArgumentException e) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -54,7 +54,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		UsernamePasswordAuthenticationToken auth = null;
 		if (validToken) {
 			String usuario = claims.getSubject();
-			Object roles = claims.get(Constantes.AUTHORITIES);
+			Object roles = claims.get(ConstantesSeguridad.AUTHORITIES);
 			Collection<? extends GrantedAuthority> authorities = Arrays
 					.asList(new ObjectMapper().addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityMixin.class)
 							.readValue(roles.toString().getBytes(), SimpleGrantedAuthority[].class));
@@ -65,7 +65,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	}
 
 	private boolean requiresAuthentication(String header) {
-		if (header == null || !header.startsWith(Constantes.PREFIX)) {
+		if (header == null || !header.startsWith(ConstantesSeguridad.PREFIX)) {
 			return false;
 		}
 		return true;

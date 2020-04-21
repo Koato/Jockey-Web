@@ -113,7 +113,7 @@ public class UsuarioController {
 	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "CAMPOS FALTANTES"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
-	@PutMapping(value = "/{id}/editar")
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> actualizarUsuario(
 			@ApiParam(value = "Identificador del usuario a actualizar", required = true) @PathVariable(required = true) String id,
 			@ApiParam(value = "Estructura del usuario a actualizar", required = true) @Valid @RequestBody(required = true) Usuario usuario,

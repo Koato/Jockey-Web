@@ -75,23 +75,23 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //		obtengo los roles del usuario
 		Collection<? extends GrantedAuthority> roles = user.getAuthorities();
 		Claims claims = Jwts.claims();
-		claims.put(Constantes.AUTHORITIES, new ObjectMapper().writeValueAsString(roles));
+		claims.put(ConstantesSeguridad.AUTHORITIES, new ObjectMapper().writeValueAsString(roles));
 		String token = Jwts.builder()
 //				indico los roles que tiene
 				.setClaims(claims)
 //				identificador del token
-				.setId(Constantes.ID)
+				.setId(ConstantesSeguridad.ID)
 //				informacion al token
-				.setIssuer(Constantes.ISSUER_INFO)
+				.setIssuer(ConstantesSeguridad.ISSUER_INFO)
 //				agrego informacion del usuario
 				.setSubject(usuario.getAlias())
 //				fecha de creacion
 				.setIssuedAt(new Date())
 //				fecha de expiracion
-				.setExpiration(new Date(System.currentTimeMillis() + Constantes.TOKEN_EXPIRATION_TIME))
+				.setExpiration(new Date(System.currentTimeMillis() + ConstantesSeguridad.TOKEN_EXPIRATION_TIME))
 //				algoritmo de cifrado
-				.signWith(SignatureAlgorithm.HS512, Constantes.SECRET_KEY.getBytes()).compact();
-		response.addHeader(Constantes.HEADER, Constantes.PREFIX + token);
+				.signWith(SignatureAlgorithm.HS512, ConstantesSeguridad.SECRET_KEY.getBytes()).compact();
+		response.addHeader(ConstantesSeguridad.HEADER, ConstantesSeguridad.PREFIX + token);
 //		no quiero que se muestre la clave del usuario
 		user.eraseCredentials();
 		body.put("usuario", user);

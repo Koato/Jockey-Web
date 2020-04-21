@@ -1,8 +1,8 @@
 package com.condominio.jockey.security;
 
-public class Constantes {
+public class ConstantesSeguridad {
 
-	private Constantes() {
+	private ConstantesSeguridad() {
 		throw new IllegalStateException("Clase de constantes de seguridad");
 	}
 
