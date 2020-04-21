@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import io.swagger.annotations.ApiModel;
@@ -15,7 +15,7 @@ import lombok.Data;
 @Document(collection = "usuario")
 @ApiModel("Modelo de Usuario")
 public class Usuario {
-	@Indexed
+	@Id
 	@ApiModelProperty(value = "Identificador de usuario", required = true)
 	private String id;
 

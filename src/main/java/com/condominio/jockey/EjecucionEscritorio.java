@@ -26,6 +26,8 @@ public class EjecucionEscritorio implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+//		subir imagenes y video en mongo
+//		https://www.baeldung.com/spring-boot-mongodb-upload-file
 //		eliminarTodo();
 //		agregarDocumentos();
 //		listarTodo();
@@ -43,7 +45,7 @@ public class EjecucionEscritorio implements CommandLineRunner {
 	public void agregarDocumentos() {
 		System.err.println("Agregando documentos a usuario...");
 		Usuario administrador = new Usuario();
-		administrador.setId("1");
+//		administrador.setId("1");
 		administrador.setAlias("Administrador");
 		administrador.setClave("$2a$10$PVm.mQWtWOBJ44rCFff4N.8RofPKrTQuhEiNPn6IXrRE7NLdk6ojW");
 		administrador.setTiempoAcceso("13/04/2020");
@@ -51,7 +53,7 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		administrador.setRoles(Arrays.asList("Administrador", "Usuario"));
 
 		Usuario presidente = new Usuario();
-		presidente.setId("2");
+//		presidente.setId("2");
 		presidente.setAlias("Presidente");
 		presidente.setClave("$2a$10$OFEejm.Rkd2RtbU3n9pHzeu6dXfb029Whs7BX88u/1DuEcbCbC1q.");
 		presidente.setTiempoAcceso("14/04/2020");
@@ -59,7 +61,7 @@ public class EjecucionEscritorio implements CommandLineRunner {
 		presidente.setRoles(Arrays.asList("Usuario"));
 
 		Usuario tesorero = new Usuario();
-		tesorero.setId("3");
+//		tesorero.setId("3");
 		tesorero.setAlias("Tesorero");
 		tesorero.setClave("$2a$10$pzI9vtVI6vos8brPgZh5iOBJSokz4vPJ5yqbT0Djkv8OVPj/dwORm");
 		tesorero.setTiempoAcceso("15/04/2020");
