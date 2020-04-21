@@ -32,6 +32,24 @@
 	</properties>
 
 	<dependencies>
+		<!-- graphql -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.graphql-java</groupId> -->
+		<!-- <artifactId>graphql-java-tools</artifactId> -->
+		<!-- <version>5.2.4</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.graphql-java</groupId> -->
+		<!-- <artifactId>graphql-spring-boot-starter</artifactId> -->
+		<!-- <version>5.0.2</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- interfaz grafica -->
+		<!-- <groupId>com.graphql-java</groupId> -->
+		<!-- <artifactId>graphiql-spring-boot-starter</artifactId> -->
+		<!-- <version>5.0.2</version> -->
+		<!-- </dependency> -->
+
 		<!-- jpa -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -50,6 +68,7 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<!-- manejo de json y xml -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
@@ -100,6 +119,7 @@
 			<version>2.9.2</version>
 		</dependency>
 		<dependency>
+			<!-- interfaz grafica -->
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
