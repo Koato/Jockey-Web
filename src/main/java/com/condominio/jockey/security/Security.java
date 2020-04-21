@@ -3,9 +3,9 @@ package com.condominio.jockey.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,25 +24,26 @@ class Security extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// Se desactiva el uso de cookies
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				// Cords por defecto
-				.cors().and()
+				.and().cors()
 				// Se desactiva el filtro CSRF
-				.csrf().disable()
+				.and().csrf().disable()
 				// Se indica que el resto de URLs esten securizadas
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
-				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-				// Se indica que el login no requiere autenticación
-				.authorizeRequests().antMatchers(HttpMethod.POST, Constantes.LOGIN_URL).permitAll()
-				// Permisos para acceder al swagger
-				.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll().antMatchers(HttpMethod.GET, "/v2/api-docs")
-				.permitAll().antMatchers(HttpMethod.GET, "/swagger-resources/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/webjars/**").permitAll().anyRequest().authenticated();
+				.addFilter(new JWTAuthenticationFilter(authenticationManager())).authorizeRequests().anyRequest()
+				.authenticated();
+	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		// Se indica que swagger no requiere autenticación
+		// no se agrega el login
+		web.ignoring().antMatchers("/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**");
 	}
 
 	@Override

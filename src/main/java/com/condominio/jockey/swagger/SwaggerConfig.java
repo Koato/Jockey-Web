@@ -37,9 +37,9 @@ public class SwaggerConfig {
 	public Docket userApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
 //				informacion del api
-				.apiInfo(userApiInfo()).select().
+				.apiInfo(userApiInfo()).select()
 //				todas las rutas
-				paths(PathSelectors.any())
+				.paths(PathSelectors.any())
 //				buscar los controller
 				.apis(RequestHandlerSelectors.basePackage("com.condominio.jockey.controller")).build()
 //				desactivo mensajes de respuesta por defecto
@@ -87,6 +87,8 @@ public class SwaggerConfig {
 				add(new ResponseMessageBuilder().code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
 						.message("ERROR INTERNO EN EL SERVIDOR").build());
 				add(new ResponseMessageBuilder().code(HttpServletResponse.SC_FORBIDDEN).message("ACCESO DENEGADO")
+						.build());
+				add(new ResponseMessageBuilder().code(HttpServletResponse.SC_BAD_REQUEST).message("SINTAXIS INCORRECTA")
 						.build());
 			}
 		};

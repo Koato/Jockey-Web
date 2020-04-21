@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -90,7 +91,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.setExpiration(new Date(System.currentTimeMillis() + Constantes.TOKEN_EXPIRATION_TIME))
 //				algoritmo de cifrado
 				.signWith(SignatureAlgorithm.HS512, Constantes.SECRET_KEY.getBytes()).compact();
-		response.addHeader(Constantes.HEADER, Constantes.PREFIX + " " + token);
+		response.addHeader(Constantes.HEADER, Constantes.PREFIX + token);
 //		no quiero que se muestre la clave del usuario
 		user.eraseCredentials();
 		body.put("usuario", user);
@@ -98,7 +99,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		body.put("mensaje", "Se ha logueado correctamente");
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 //		la respuesta debe mostrarse como json
-		response.setContentType("application/json");
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 //		indico que fue exitoso
 		response.setStatus(200);
 	}

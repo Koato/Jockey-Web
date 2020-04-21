@@ -29,11 +29,12 @@ import com.condominio.jockey.services.UsuarioServices;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 //indico quienes pueden consumir el servicio
-@CrossOrigin(origins = { "http://localhost:3131" })
+@CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 @RequestMapping(value = "/usuarios")
 //documentacion del servicios
@@ -50,7 +51,8 @@ public class UsuarioController {
 	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> usuario(@PathVariable String id) {
+	public ResponseEntity<?> usuario(
+			@ApiParam(value = "Identificador del usuario a buscar", required = true) @PathVariable(required = true) String id) {
 		Map<String, Object> response = new HashMap<>();
 		Usuario usuario = null;
 		try {
@@ -82,7 +84,9 @@ public class UsuarioController {
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "CAMPOS FALTANTES"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@PostMapping
-	public ResponseEntity<?> insertarUsuario(@Valid @RequestBody Usuario usuario, BindingResult result) {
+	public ResponseEntity<?> insertarUsuario(
+			@ApiParam(value = "Usuario a registrar", required = true) @Valid @RequestBody(required = true) Usuario usuario,
+			BindingResult result) {
 		Map<String, Object> response = new HashMap<>();
 		Usuario usuarioNuevo = null;
 		if (result.hasErrors()) {
@@ -110,7 +114,9 @@ public class UsuarioController {
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "CAMPOS FALTANTES"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@PutMapping(value = "/{id}/editar")
-	public ResponseEntity<?> actualizarUsuario(@PathVariable String id, @Valid @RequestBody Usuario usuario,
+	public ResponseEntity<?> actualizarUsuario(
+			@ApiParam(value = "Identificador del usuario a actualizar", required = true) @PathVariable(required = true) String id,
+			@ApiParam(value = "Estructura del usuario a actualizar", required = true) @Valid @RequestBody(required = true) Usuario usuario,
 			BindingResult result) {
 		Map<String, Object> response = new HashMap<>();
 		if (result.hasErrors()) {
@@ -141,7 +147,8 @@ public class UsuarioController {
 	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> eliminarUsuario(@PathVariable String id) {
+	public ResponseEntity<?> eliminarUsuario(
+			@ApiParam(value = "Identificador del usuario a eliminar", required = true) @PathVariable(required = true) String id) {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			usuarioServices.eliminarUsuario(id);
