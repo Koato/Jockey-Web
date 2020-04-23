@@ -29,6 +29,7 @@ import com.condominio.jockey.security.services.PersonalizacionUsuarioDetalle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -87,6 +88,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.setSubject(usuario.getAlias())
 //				fecha de creacion
 				.setIssuedAt(new Date())
+//				compresion de informacion del token
+				.compressWith(CompressionCodecs.DEFLATE)
 //				fecha de expiracion
 				.setExpiration(new Date(System.currentTimeMillis() + ConstantesSeguridad.TOKEN_EXPIRATION_TIME))
 //				algoritmo de cifrado

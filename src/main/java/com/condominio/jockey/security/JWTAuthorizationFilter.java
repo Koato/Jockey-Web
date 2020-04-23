@@ -40,8 +40,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		boolean validToken = false;
 		Claims claims = null;
 		try {
+//			obtengo el token del header
 			String token = request.getHeader(ConstantesSeguridad.HEADER).replace(ConstantesSeguridad.PREFIX, "");
-			claims = Jwts.parser().setSigningKey(ConstantesSeguridad.SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
+			claims = Jwts.parser().setSigningKey(ConstantesSeguridad.SECRET_KEY.getBytes()).parseClaimsJws(token)
+					.getBody();
 			validToken = true;
 		} catch (JwtException | IllegalArgumentException e) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);

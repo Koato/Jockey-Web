@@ -51,7 +51,7 @@ public class UsuarioController {
 	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> usuario(
+	public ResponseEntity<Object> usuario(
 			@ApiParam(value = "Identificador del usuario a buscar", required = true) @PathVariable(required = true) String id) {
 		Map<String, Object> response = new HashMap<>();
 		Usuario usuario = null;
@@ -72,7 +72,7 @@ public class UsuarioController {
 	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@GetMapping
-	public ResponseEntity<?> usuarios() {
+	public ResponseEntity<Object> usuarios() {
 		Map<String, Object> response = new HashMap<>();
 		response.put("usuarios", usuarioServices.findAll());
 		response.put("total", usuarioServices.findAll().stream().count());
@@ -84,7 +84,7 @@ public class UsuarioController {
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "CAMPOS FALTANTES"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@PostMapping
-	public ResponseEntity<?> insertarUsuario(
+	public ResponseEntity<Object> insertarUsuario(
 			@ApiParam(value = "Usuario a registrar", required = true) @Valid @RequestBody(required = true) Usuario usuario,
 			BindingResult result) {
 		Map<String, Object> response = new HashMap<>();
@@ -114,7 +114,7 @@ public class UsuarioController {
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "CAMPOS FALTANTES"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> actualizarUsuario(
+	public ResponseEntity<Object> actualizarUsuario(
 			@ApiParam(value = "Identificador del usuario a actualizar", required = true) @PathVariable(required = true) String id,
 			@ApiParam(value = "Estructura del usuario a actualizar", required = true) @Valid @RequestBody(required = true) Usuario usuario,
 			BindingResult result) {
@@ -147,7 +147,7 @@ public class UsuarioController {
 	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> eliminarUsuario(
+	public ResponseEntity<Object> eliminarUsuario(
 			@ApiParam(value = "Identificador del usuario a eliminar", required = true) @PathVariable(required = true) String id) {
 		Map<String, Object> response = new HashMap<>();
 		try {
