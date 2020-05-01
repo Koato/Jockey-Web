@@ -14,12 +14,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.condominio.jockey.security.services.implement.JwtEntryPoint;
+
 @Configuration
 @EnableWebSecurity
 class Security extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private JwtEntryPoint entryPoint;
 
 	@ConditionalOnMissingBean
 	@Bean
@@ -35,6 +40,8 @@ class Security extends WebSecurityConfigurerAdapter {
 				.and().cors()
 				// Se desactiva el filtro CSRF
 				.and().csrf().disable()
+				// Configuro el mensaje para el punto de acceso
+				.exceptionHandling().authenticationEntryPoint(entryPoint).and()
 				// Se indica que el resto de URLs esten securizadas
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 				.addFilter(new JWTAuthenticationFilter(authenticationManager())).authorizeRequests().anyRequest()

@@ -116,7 +116,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		body.put("error", failed.getMessage());
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 //		la respuesta debe mostrarse como json
-		response.setContentType("application/json");
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 //		indico que no esta autorizado
 		response.setStatus(401);
 	}
