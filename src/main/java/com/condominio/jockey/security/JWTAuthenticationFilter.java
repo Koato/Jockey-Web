@@ -99,6 +99,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		user.eraseCredentials();
 		body.put("usuario", user);
 		body.put("token", token);
+		body.put("tokenType", ConstantesSeguridad.PREFIX.trim());
 		body.put("mensaje", "Se ha logueado correctamente");
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 //		la respuesta debe mostrarse como json

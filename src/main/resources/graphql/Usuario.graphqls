@@ -1,0 +1,31 @@
+type Usuario {
+	id: ID!
+	alias: String!
+	clave: String!
+	tiempoAcceso: String
+	estado: Boolean
+	roles: [String]
+}
+
+type Query {
+	obtenerUsuarios(first: Int, after: String): UsuarioConnection @connection(for: "Usuario")
+	obtenerUsuario(id: String!): Usuario
+}
+
+type Mutation{
+	crearUsuario(usuario: UsuarioInput!): Usuario
+	actualizarUsuario(id: String!, usuario: UsuarioInput!): Usuario
+	eliminarUsuario(id: String!): Usuario
+}
+
+input UsuarioInput {
+	alias: String!
+	clave: String!
+	estado: Boolean
+	roles: [String]!
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}

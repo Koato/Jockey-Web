@@ -51,8 +51,10 @@ class Security extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// Se indica que swagger no requiere autenticación
+		// Se indica que graphiql, pero el servicio se graphql si lo requiere
 		// no se agrega el login
-		web.ignoring().antMatchers("/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**");
+		web.ignoring().antMatchers("/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**",
+				"/graphiql", "/vendor/**");
 	}
 
 	@Override
