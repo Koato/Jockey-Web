@@ -47,11 +47,11 @@ class Security extends WebSecurityConfigurerAdapter {
 //		acepta informacion en la cabecera
 		configuration.setAllowedHeaders(Arrays.asList("*"));
 //        url que puede pedir informacion
-		configuration.setAllowedOrigins(Arrays.asList("https://localhost:3000"));
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
 //        metodos HTTP a los que tiene acceso
 		configuration.setAllowedMethods(Arrays.asList("*"));
-//		duracion de la informacion en cache es de 2 minutos
-		configuration.setMaxAge(Duration.ofMinutes(2));
+//		duracion de la informacion en cache
+		configuration.setMaxAge(Duration.ofMinutes(15));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 //        metodos a los que tiene acceso
 		source.registerCorsConfiguration("/**", configuration);
