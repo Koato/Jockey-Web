@@ -1,5 +1,8 @@
 package com.condominio.jockey.security;
 
+import java.time.Duration;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.condominio.jockey.security.services.implement.JwtEntryPoint;
 
@@ -30,6 +36,26 @@ class Security extends WebSecurityConfigurerAdapter {
 	@Bean
 	public PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+//	configuracion de cors
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+//		permite el envio de credenciales entre dominios
+		configuration.setAllowCredentials(true);
+//		acepta informacion en la cabecera
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+//        url que puede pedir informacion
+		configuration.setAllowedOrigins(Arrays.asList("https://localhost:3000"));
+//        metodos HTTP a los que tiene acceso
+		configuration.setAllowedMethods(Arrays.asList("*"));
+//		duracion de la informacion en cache es de 2 minutos
+		configuration.setMaxAge(Duration.ofMinutes(2));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        metodos a los que tiene acceso
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 
 	@Override
