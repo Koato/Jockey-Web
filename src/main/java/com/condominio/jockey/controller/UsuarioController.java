@@ -34,7 +34,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 //indico quienes pueden consumir el servicio
-@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "*" })
 @RestController
 @RequestMapping(value = "/usuarios")
 //documentacion del servicios
