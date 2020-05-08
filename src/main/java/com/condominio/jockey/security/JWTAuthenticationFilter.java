@@ -26,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.condominio.jockey.beans.Usuario;
 import com.condominio.jockey.security.services.PersonalizacionUsuarioDetalle;
+import com.condominio.jockey.services.implement.CaptchaServicesImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
@@ -45,11 +46,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		try {
-//			informacion enviada en el body de la solicitud como raw
+			// informacion enviada en el body de la solicitud como raw
 			Usuario credenciales = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-					credenciales.getAlias(), credenciales.getClave(), Collections.emptyList());
-			return authenticationManager.authenticate(authenticationToken);
+//			verificar si el captcha del Front-End es correcto
+			if (CaptchaServicesImpl.validateCaptcha(credenciales.getCaptchaResponse())) {
+				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+						credenciales.getAlias(), credenciales.getClave(), Collections.emptyList());
+				return authenticationManager.authenticate(authenticationToken);
+			} else {
+				throw new RuntimeException("Captcha no es válido");
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage());
 		}

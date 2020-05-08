@@ -2,6 +2,7 @@ package com.condominio.jockey.beans;
 
 import java.util.List;
 
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.data.annotation.Id;
@@ -37,4 +38,7 @@ public class Usuario {
 	@NotEmpty(message = "No puede estar vacio")
 	@ApiModelProperty(value = "Lista de roles de usuario", required = true)
 	private List<String> roles;
+	
+	@Transient
+	private String captchaResponse;
 }
