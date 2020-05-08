@@ -1,9 +1,10 @@
 package com.condominio.jockey.services.implement;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,8 +30,8 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Usuario> findAll() {
-		return usuarioRepository.findAll();
+	public Page<Usuario> findAll(Pageable pageable) {
+		return usuarioRepository.findAll(pageable);
 	}
 
 	@Override

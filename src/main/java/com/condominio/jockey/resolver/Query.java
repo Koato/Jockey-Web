@@ -1,8 +1,7 @@
 package com.condominio.jockey.resolver;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.condominio.jockey.beans.Usuario;
@@ -21,8 +20,8 @@ public class Query implements GraphQLQueryResolver {
 
 //	listado paginado
 	public Connection<Usuario> obtenerUsuarios(int first, String after, DataFetchingEnvironment env) {
-		List<Usuario> usuarios = usuarioServicesImpl.findAll();
-		return new SimpleListConnection<>(usuarios).get(env);
+		Page<Usuario> usuarios = usuarioServicesImpl.findAll(null);
+		return new SimpleListConnection<>(usuarios.getContent()).get(env);
 	}
 
 	public Usuario obtenerUsuario(String id) {

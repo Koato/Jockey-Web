@@ -1,11 +1,12 @@
 package com.condominio.jockey.services;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.condominio.jockey.beans.Usuario;
 
 public interface UsuarioServices {
-	List<Usuario> findAll();
+	Page<Usuario> findAll(Pageable pageable);
 
 	Usuario findById(String id);
 

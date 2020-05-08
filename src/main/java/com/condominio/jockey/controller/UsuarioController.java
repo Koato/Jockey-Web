@@ -10,6 +10,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -65,15 +67,13 @@ public class UsuarioController {
 		}
 	}
 
-	@ApiOperation(value = "Encontrar todos los usuario", notes = "Returna todos los usuarios", response = List.class)
+	@ApiOperation(value = "Encontrar todos los usuario", notes = "Returna todos los usuarios", response = Pageable.class)
 	@ApiResponses({ @ApiResponse(code = HttpServletResponse.SC_OK, message = "OK"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "ELEMENTO NO ENCONTRADO") })
 	@GetMapping
-	public ResponseEntity<Object> usuarios() {
-		Map<String, Object> response = new HashMap<>();
-		response.put("usuarios", usuarioServices.findAll());
-		response.put("total", usuarioServices.findAll().stream().count());
-		return ResponseEntity.ok(response);
+	public ResponseEntity<Object> usuarios(
+			@ApiParam(value = "Metodos para paginación", required = false) @Param(value = "page") Pageable pageable) {
+		return ResponseEntity.ok(usuarioServices.findAll(pageable));
 	}
 
 	@ApiOperation(value = "Creacion de usuario", notes = "Creacion de un nuevo usuario", response = ResponseEntity.class)
