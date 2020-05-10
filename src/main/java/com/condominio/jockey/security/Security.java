@@ -47,7 +47,7 @@ class Security extends WebSecurityConfigurerAdapter {
 //		acepta informacion en la cabecera
 		configuration.setAllowedHeaders(Arrays.asList("*"));
 //        url que puede pedir informacion
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://jckclub.netlify.app/"));
 //        metodos HTTP a los que tiene acceso
 		configuration.setAllowedMethods(Arrays.asList("*"));
 //		duracion de la informacion en cache
