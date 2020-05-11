@@ -20,22 +20,22 @@ public class Usuario {
 	@ApiModelProperty(value = "Identificador de usuario", required = true)
 	private String id;
 
-	@NotEmpty(message = "No puede estar vacio")
+	@NotEmpty(message = "no puede estar vacio")
 	@ApiModelProperty(value = "Alias de usuario", required = true)
 	private String alias;
 
-	@NotEmpty(message = "No puede estar vacio")
+	@NotEmpty(message = "no puede estar vacio")
 	@ApiModelProperty(value = "Clave de usuario", required = true)
 	private String clave;
 
-	@NotEmpty(message = "No puede estar vacio")
+	@NotEmpty(message = "no puede estar vacio")
 	@ApiModelProperty(value = "Fecha y hora de acceso del usuario", required = true)
 	private String tiempoAcceso;
 
 	@ApiModelProperty(value = "Estado de usuario", required = true)
 	private boolean estado;
 
-	@NotEmpty(message = "No puede estar vacio")
+	@NotEmpty(message = "no puede estar vacio")
 	@ApiModelProperty(value = "Lista de roles de usuario", required = true)
 	private List<String> roles;
 	

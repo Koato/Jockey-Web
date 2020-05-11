@@ -37,10 +37,9 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	@Override
 	@Transactional(readOnly = true)
 	public Usuario findById(String id) {
-		Usuario usuario = obtenerUsuario(id);
-		Optional<Usuario> optional = Optional.ofNullable(usuario);
-		if (optional.isPresent()) {
-			return optional.get();
+		Optional<Usuario> usuario = obtenerUsuario(id);
+		if (usuario.isPresent()) {
+			return usuario.get();
 		} else {
 			throw new UserNotFoundException(id);
 		}
@@ -51,7 +50,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	public Usuario guardarUsuario(Usuario usuario) {
 		usuario.setClave(encriptarClave(usuario.getClave()));
 		usuarioRepository.save(usuario);
-		return obtenerUsuario(usuario.getId());
+		return obtenerUsuario(usuario.getId()).get();
 	}
 
 	@Override
@@ -73,16 +72,21 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	@Override
 	@Transactional
 	public void eliminarUsuario(String id) {
-		Usuario usuario = obtenerUsuario(id);
-		long result = mongoOperations.remove(usuario).getDeletedCount();
-		if (result == 0) {
+		Optional<Usuario> usuario = obtenerUsuario(id);
+		if(usuario.isPresent()) {			
+			long result = mongoOperations.remove(usuario.get()).getDeletedCount();
+			if (result == 0) {
+				throw new UserNotFoundException(id);
+			}
+		}else {
 			throw new UserNotFoundException(id);
 		}
 	}
 
-	private Usuario obtenerUsuario(String id) {
+	private Optional<Usuario> obtenerUsuario(String id) {
+		System.out.println("ID: " + id);
 		Query query = new Query(Criteria.where("_id").is(id));
-		return mongoOperations.findOne(query, Usuario.class);
+		return Optional.ofNullable(mongoOperations.findOne(query, Usuario.class));
 	}
 
 	private String encriptarClave(String clave) {
