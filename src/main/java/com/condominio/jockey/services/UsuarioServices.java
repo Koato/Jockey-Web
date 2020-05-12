@@ -12,7 +12,7 @@ public interface UsuarioServices {
 
 	Usuario guardarUsuario(Usuario usuario);
 
-	void actualizarUsuario(Usuario usuario);
+	Usuario actualizarUsuario(Usuario usuario);
 
-	void eliminarUsuario(String id);
+	Usuario eliminarUsuario(String id);
 }

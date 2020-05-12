@@ -55,7 +55,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
 	@Override
 	@Transactional
-	public void actualizarUsuario(Usuario usuario) {
+	public Usuario actualizarUsuario(Usuario usuario) {
 		Query query = new Query(Criteria.where("_id").is(usuario.getId()));
 		Update update = new Update();
 		update.set("alias", usuario.getAlias());
@@ -67,24 +67,25 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		if (result.getMatchedCount() == 0) {
 			throw new UserNotFoundException(usuario.getId());
 		}
+		return obtenerUsuario(usuario.getId()).get();
 	}
 
 	@Override
 	@Transactional
-	public void eliminarUsuario(String id) {
+	public Usuario eliminarUsuario(String id) {
 		Optional<Usuario> usuario = obtenerUsuario(id);
-		if(usuario.isPresent()) {			
+		if (usuario.isPresent()) {
 			long result = mongoOperations.remove(usuario.get()).getDeletedCount();
 			if (result == 0) {
 				throw new UserNotFoundException(id);
 			}
-		}else {
+			return usuario.get();
+		} else {
 			throw new UserNotFoundException(id);
 		}
 	}
 
 	private Optional<Usuario> obtenerUsuario(String id) {
-		System.out.println("ID: " + id);
 		Query query = new Query(Criteria.where("_id").is(id));
 		return Optional.ofNullable(mongoOperations.findOne(query, Usuario.class));
 	}
